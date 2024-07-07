@@ -1,0 +1,97 @@
+{% extends 'accounts/auth_base.html' %}
+{% block title %}Register{% endblock %}
+{% block content %}
+
+
+<!--Main Navigation-->
+<header>
+    <style>
+      #intro {
+        background-image: url("{{ site_settings.authPage_bgImg.url }}");
+        height: 100vh;
+      }
+  
+      /* Height for devices larger than 576px */
+      @media (min-width: 992px) {
+        #intro {
+          margin-top: -58.59px;
+        }
+      }
+  
+      .navbar .nav-link {
+        color: #fff !important;
+      }
+    </style>
+  
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark d-none d-lg-block" style="z-index: 2000;">
+      <div class="container-fluid">
+        <!-- Navbar brand -->
+        <a class="navbar-brand nav-link" href="{% url "index" %}">
+          <strong>{{ site_settings.site_title }}</strong>
+        </a>
+        <button class="navbar-toggler" type="button" data-mdb-collapse-init data-mdb-target="#navbarExample01"
+                aria-controls="navbarExample01" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="bi bi-list"></i>
+        </button>
+      </div>
+    </nav>
+    <!-- Navbar -->
+  
+    <!-- Background image -->
+    <div id="intro" class="bg-image shadow-2-strong">
+      <div class="mask d-flex align-items-center h-100" style="background-color: rgba(0, 0, 0, 0.8);">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-xl-5 col-md-8">
+              <form method="post" class="bg-white rounded shadow-5-strong p-5">
+                {% csrf_token %}
+
+                <h2>Register</h2>
+                
+                <!-- username input -->
+                <div class="form-outline mb-4" data-mdb-input-init>
+                  {{ form.username }}
+                  <label class="form-label" for="{{ form.username.id_for_label }}">Username</label>
+                </div>
+
+                <!-- username input -->
+                <div class="form-outline mb-4" data-mdb-input-init>
+                    {{ form.email }}
+                    <label class="form-label" for="{{ form.email.id_for_label }}">Email address</label>
+                </div>
+  
+                <!-- Password input -->
+                <div class="form-outline mb-4" data-mdb-input-init>
+                  {{ form.password1 }}
+                  <label class="form-label" for="{{ form.password1.id_for_label }}">Password</label>
+                </div>
+
+                <!-- Repeat Password input -->
+                <div class="form-outline mb-4" data-mdb-input-init>
+                    {{ form.password2 }}
+                    <label class="form-label" for="{{ form.password2.id_for_label }}">Repeat Password</label>
+                </div>
+  
+                <!-- 2 column grid layout for inline styling -->
+                <div class="row mb-4">
+  
+                  <div class="col text-center">
+                    <!-- Simple link -->
+                    <p><small class="d-flex row">Already have an account?<a href="{% url 'login' %}" class="mx-1"> Login</a></small></p>
+                  </div>
+                </div>
+  
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary btn-block" data-mdb-ripple-init>Sign Up</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Background image -->
+  </header>
+  <!--Main Navigation-->
+  
+  {% endblock %}

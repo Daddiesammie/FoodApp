@@ -1,0 +1,22 @@
+{% extends 'core/base.html' %}
+{% block title %}Index{% endblock  %}
+{% block content %}
+    <div class="hero">
+        {% if site_settings.background_video %}
+        <video autoplay muted loop id="background-video">
+            <source src="{{ site_settings.background_video.url }}" type="video/mp4">
+            Your browser does not support HTML5 video.
+        </video>
+        {% endif %}
+        <div class="content">
+            <img src="{{ site_settings.site_logo.url }}" class="img-fluid" alt="Logo">
+            <h3>{{ site_settings.site_description }}</h3>
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" class="button">Dashboard</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="button">Login</a>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
