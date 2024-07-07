@@ -1,0 +1,126 @@
+{% extends 'accounts/base.html' %}
+{% block title %}Dashboard{% endblock  %}
+{% block content %}
+
+    
+  <!--Main layout-->
+  <main class="pt-5 mx-lg-5">
+    <div class="container-fluid mt-5">
+      
+      <div class="alert alert-warning alert-dismissible fade show text-center" role="alert">
+        <h4><strong>Welcome,</strong> {{ user.username }}!</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+
+
+      <!--Grid row-->
+      <div class="row wow fadeIn">
+
+        <!--Grid column-->
+        <div class="col-md-12 mb-4">
+          <!--Card-->
+          <div class="card">
+              <!--Card content-->
+              <div class="card-body">
+                  <h5 class="card-title">Bar Chart</h5>
+                  {% comment %} <canvas id="myChart"></canvas> {% endcomment %}
+                  <canvas id="barChart" style="max-height: 400px;"></canvas>
+                  <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                        // Get the data passed from the view
+                        const dates = JSON.parse('{{ dates|safe }}');
+                        const amounts = JSON.parse('{{ amounts|safe }}');
+                    
+                        console.log("Dates:", dates); // Debug print
+                        console.log("Amounts:", amounts); // Debug print
+                    
+                        new Chart(document.querySelector('#barChart'), {
+                            type: 'bar',
+                            data: {
+                                labels: dates,
+                                datasets: [{
+                                    label: 'Amount Spent',
+                                    data: amounts,
+                                    backgroundColor: [
+                                        'rgba(255, 99, 132, 0.2)',
+                                        'rgba(255, 159, 64, 0.2)',
+                                        'rgba(255, 205, 86, 0.2)',
+                                        'rgba(75, 192, 192, 0.2)',
+                                        'rgba(54, 162, 235, 0.2)',
+                                        'rgba(153, 102, 255, 0.2)',
+                                        'rgba(201, 203, 207, 0.2)'
+                                    ],
+                                    borderColor: [
+                                        'rgb(255, 99, 132)',
+                                        'rgb(255, 159, 64)',
+                                        'rgb(255, 205, 86)',
+                                        'rgb(75, 192, 192)',
+                                        'rgb(54, 162, 235)',
+                                        'rgb(153, 102, 255)',
+                                        'rgb(201, 203, 207)'
+                                    ],
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    });
+                  </script>
+              </div>
+          </div>
+          <!--/.Card-->
+        </div>
+        <!--Grid column-->
+      </div>
+      <!--Grid row-->
+
+      <h3 class="my-5 rounded p-3 bg-light text-center"><strong>Recent Orders</strong></h3>
+      <div class="card p-3">
+        {% if orderss %}
+          <table class="table table-borderless datatable rounded">
+              <thead>
+                  <tr>
+                      <th scope="col">Order ID</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Total</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Details</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for order in orderss %}
+                      <tr>
+                          <th scope="row">{{ order.id }}</th>
+                          <td>{{ order.created_at }}</td>
+                          <td>&#x20A6;{{ order.get_total_cost }}</td>
+                          <td>
+                              <span class="badge rounded {% if order.paid %}badge-success{% else %}badge-danger{% endif %}">
+                                  {{ order.paid|yesno:"Paid,Unpaid" }}
+                              </span>
+                          </td>
+                          <td><a href="{% url 'order_detail' order.id %}" class="text-primary">View</a></td>
+                      </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+      {% else %}
+          <div class="alert alert-info text-center" role="alert">
+              There are no orders to display.
+          </div>
+      {% endif %}
+      </div>
+      <div class="text-center m-3">
+        <a href="{% url "orders" %}" class="btn btn-primary"> View order History</a>
+      </div>
+    </div>
+  </main>
+  <!--Main layout-->
+
+  
+{% endblock %}
